@@ -11,9 +11,16 @@
         config = {};
       }
       settings = $.extend({}, config);
-      if (settings.separator == null) {
-        settings.separator = '|';
+      if (settings.words == null) {
+        if (settings.separator == null) {
+          settings.separator = '|';
+        }
+        settings.wordmode = false;
+      } else {
+       settings.wordmode = true;
       }
+
+        
       if (settings.delay == null) {
         settings.delay = 2000;
       }
@@ -117,9 +124,13 @@
         var animate, array, back_style, flip, flip_container, front_style, next_style_index, prefixer, style_index;
         flip_container = $(this);
         array = [];
-        $.each(flip_container.text().split(settings.separator), function(key, value) {
-          return array.push(value);
-        });
+        if(settings.wordmode) {
+          array = settings.words;
+        } else {
+          $.each(flip_container.text().split(settings.separator), function(key, value) {
+            return array.push(value);
+          });
+        }
         style_index = 0;
         if (settings.styles.length > 0) {
           flip_container.html("<span class='" + settings.styles[0] + "'>" + array[0] + "</span>");
